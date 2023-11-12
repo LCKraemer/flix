@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from django.conf import settings
-
+import dj_database_url
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,16 +22,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(hmi*chx_15bp6*abb1v=hmu30t05!4s7yv5rof5a3m$aahadw'
+TOKEN_CSRF = os.getenv('TOKEN_CSRF')
+if TOKEN_CSRF:
+    SECRET_KEY = TOKEN_CSRF
+    CSRF_TRUSTED_ORIGINS = ['site https://...']
+else:
+    SECRET_KEY = 'django-insecure-(hmi*chx_15bp6*abb1v=hmu30t05!4s7yv5rof5a3m$aahadw'
+
+TOKEN = '7f3e0c17c86291177ea25be668f462bbee22b923cd83b0b2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["", "localhost", "127.0.0.1"]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -87,8 +94,7 @@ DATABASES = {
     }
 }
 
-import dj_database_url
-import os
+
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 if DATABASE_URL:
